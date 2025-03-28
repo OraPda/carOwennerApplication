@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body,window{
+      width: 100%;
+      height: 100%;
+      background-color: #101010;
+    }
+
+    #box {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+
+      
+    }
+  </style>
+</head>
+
+<body>
+  <div id="box">
+    <div style="font-size: 16;font-weight: bold;padding-bottom:10px;width: 100%;border-bottom: 1px solid white;color: white;">车辆近七日行驶里程</div>
+    <div id="main" style="width:100%;height: 430px;"></div>
+  </div>
+  <script type="text/javascript" src="./chart.js"></script>
+  <script>
+    function getLastSevenDays() {
+      var today = new Date(); // 创建今天的日期对象
+      var dateList = []; // 存放日期列表的数组
+      for (var i = 0; i < 7; i++) {
+        var currentDay = new Date(today); // 复制今天的日期对象
+        currentDay.setDate(currentDay.getDate() - 7 + i); // 设置为前i天的日期,如果获取后it天的日期改成currentDay.getDate()+i
+        var year = currentDay.getFullYear(); // 年份
+        var month = String(currentDay.getMonth() + 1).padStart(2, '0'); // 月份（需要考虑到月份从0开始计算）
+        var day = String(currentDay.getDate()).padStart(2, '0'); // 日期
+        var formattedDate = `${year}-${month}-${day}`; // 格式化后的日期字符串
+        dateList.push(formattedDate); // 将日期添加到数组中
+      }
+      return dateList;
+    }
+
+
+
+    function initChart(params) {
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('main'));
+      const keys = Object.keys(params)
+      let cars = [];
+      let series = [];
+      for (let index in keys) {
+        cars.push(keys[index])
+        let serie = {
+          name: keys[index],
+          type: 'line',
+          data: params[keys[index]].map(x => x.mileage)
+        }
+        series.push(serie);
+      }
+      // 指定图表的配置项和数据
+      var option = {
+        title: {
+          text: ''
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: cars
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: true,
+          data: getLastSevenDays()
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: series
+      };
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    }
+
+  </script>
+
+</body>
+
+</html>

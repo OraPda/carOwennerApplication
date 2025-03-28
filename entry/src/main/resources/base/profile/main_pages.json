@@ -1,0 +1,15 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/login/LoginPage",
+    "pages/login/RegisterPage",
+    "pages/home/MessagePage",
+    "pages/mine/PersonalInfoPage",
+    "pages/mine/BindCarPage",
+    "pages/mine/SubmitFeedbackPage",
+    "pages/start/StartPage",
+    "pages/nfc/NFCPage",
+    "pages/mine/MyFeedbackListPage",
+    "pages/mine/FeedbackDetailPage"
+  ]
+}
